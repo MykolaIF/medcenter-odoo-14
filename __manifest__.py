@@ -1,0 +1,21 @@
+{
+    'name': "Управління медичним центром",
+    'version': '1.0',
+    'author': "Mykola Pasko",
+    'website': "https://medlayk.com.ua/",
+    'sequence': -100,
+    'summary': "Medical center management",
+    'description': """Система управління медичним центром""",
+    'category': "Uncategorized",
+    'depends': ["base"],
+    'data': [
+        "views/registry_view.xml",
+        "views/services_view.xml",
+        "views/doctors_view.xml",
+        "views/specialties_view.xml",
+    ],
+    'assets': {},
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

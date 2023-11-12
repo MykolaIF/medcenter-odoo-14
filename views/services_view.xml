@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Послуга-->
+    <record id="view_service_form" model="ir.ui.view">
+        <field name="name">Послуги</field>
+        <field name="model">medcenter.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h3>
+                            <field name="name" placeholder="Послуга"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <field name="responsible"
+                               placeholder="Відповідальний лікар"/>
+                        <field name="currency_id"
+                               groups="base.group_multi_currency"/>
+                        <field name="price"
+                               widget="monetary"
+                               options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_service_kanban" model="ir.ui.view">
+        <field name="name">Перелік послуг</field>
+        <field name="model">medcenter.service</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_card_content">
+                                <field name="name"/>
+                                <field name="currency_id"
+                                       groups="base.group_multi_currency"/>
+                                <field name="price"
+                                       display="full"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_service_tree" model="ir.ui.view">
+        <field name="name">Перелік послуг</field>
+        <field name="model">medcenter.service</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="responsible"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="price" widget="monetary"
+                       options="{'currency_field': 'currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_view_service_tree"
+            model="ir.actions.act_window">
+        <field name="name">Послуги</field>
+        <field name="res_model">medcenter.service</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="view_service_tree"/>
+    </record>
+
+    <!--Меню-->
+    <menuitem id="menu_services"
+              name="Послуги"
+              action="action_view_service_tree"
+              parent="menu_medical_center"
+              sequence="20"/>
+</odoo>

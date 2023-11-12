@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Реєстрація клієнтів-->
+    <record id="view_registry_form" model="ir.ui.view">
+        <field name="name">Реєстрація клієнта</field>
+        <field name="model">medcenter.registry</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status"
+                           widget="statusbar"
+                           options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id" placeholder="Клієнт"/>
+                            <field name="date_time" placeholder="Дата та час"/>
+                            <field name="comment" placeholder="Коментар"/>
+                        </group>
+                        <group>
+                            <field name="doctor" placeholder="Лікар"/>
+                            <field name="services" widget="many2many_tags"/>
+                            <field name="currency_id"
+                                   groups="base.group_multi_currency"/>
+                            <field name="amount"
+                                   display="full"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_registry_tree" model="ir.ui.view">
+        <field name="name">Реєстрація клієнтів</field>
+        <field name="model">medcenter.registry</field>
+        <field name="arch" type="xml">
+            <tree default_order="date_time">
+                <field name="date_time"/>
+                <field name="partner_id"/>
+                <field name="partner_phone" optional="show"/>
+                <field name="doctor" optional="show"/>
+                <field name="services"
+                       optional="show"
+                       widget="many2many_tags"/>
+                <field name="currency_id"
+                       groups="base.group_multi_currency"/>
+                <field name="status"/>
+                <field name="amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_view_registry_tree" model="ir.actions.act_window">
+        <field name="name">Реєстрація клієнтів</field>
+        <field name="res_model">medcenter.registry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_registry_tree"/>
+    </record>
+
+    <!--Фільтр-->
+    <record id="view_registry_search" model="ir.ui.view">
+        <field name="name">Реєстрація клієнтів</field>
+        <field name="model">medcenter.registry</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="partner_phone"/>
+                <filter string="Нові клієнти"
+                        name="new_clients"
+                        domain="[('status','=','new')]"/>
+                <filter string="Клієнти, що відмовились"
+                        name="cancel_clients"
+                        domain="[('status','=','cancel')]"/>
+                <filter string="Клієнти, що скористались послугами"
+                        name="done_clients"
+                        domain="[('status','=','done')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!--Меню-->
+    <menuitem id="menu_medical_center"
+              name="Управління медичним центром"
+              sequence="10"/>
+
+    <menuitem id="menu_registry"
+              name="Реєстрація клієнтів"
+              action="action_view_registry_tree"
+              parent="menu_medical_center"
+              sequence="10"/>
+
+    <menuitem id="menu_doctors_specialties"
+              name="Лікарі та спеціальності"
+              parent="menu_medical_center"
+              sequence="25"/>
+</odoo>
